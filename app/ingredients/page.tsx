@@ -235,14 +235,6 @@ function IngredientListContent() {
             <table className="w-full">
               <thead className="bg-gradient-to-r from-gray-50 to-gray-100/50">
                 <tr>
-                  <th className="text-left py-4 px-6">
-                    <input
-                      type="checkbox"
-                      checked={selectedItems.length === paginatedIngredients.length && paginatedIngredients.length > 0}
-                      onChange={toggleSelectAll}
-                      className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500"
-                    />
-                  </th>
                   <th className="text-left py-4 px-6 font-semibold text-gray-700">Nama Bahan</th>
                   <th className="text-left py-4 px-6 font-semibold text-gray-700">Satuan</th>
                   <th className="text-left py-4 px-6 font-semibold text-gray-700">Harga Terakhir</th>
@@ -259,14 +251,6 @@ function IngredientListContent() {
                       index % 2 === 0 ? "bg-white" : "bg-gray-50/30"
                     } ${ingredient.updatedFromReceipt ? "bg-blue-50/30" : ""}`}
                   >
-                    <td className="py-4 px-6">
-                      <input
-                        type="checkbox"
-                        checked={selectedItems.includes(ingredient.id)}
-                        onChange={() => toggleSelectItem(ingredient.id)}
-                        className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500"
-                      />
-                    </td>
                     <td className="py-4 px-6">
                       <div className="flex items-center space-x-3">
                         <div>

@@ -53,7 +53,7 @@ const menuItems: MenuItem[] = [
     icon: DollarSign,
     label: "Harga Belanja",
     children: [
-      { icon: Send, label: "Kirim & Riwayat Nota Belanja", href: "/receipts" },
+      { icon: Send, label: "Riwayat Nota Belanja", href: "/receipts" },
       { icon: Edit, label: "Update Harga Manual", href: "/price-update" },
     ],
   },
@@ -82,11 +82,6 @@ const menuItems: MenuItem[] = [
       { icon: TrendingUp, label: "Paket & Upgrade", href: "/plans" },
       { icon: FileText, label: "Riwayat Transaksi", href: "/transactions" },
     ],
-  },
-  {
-    icon: HelpCircle,
-    label: "Panduan & Bantuan",
-    href: "/help",
   },
   {
     icon: LogOut,
@@ -131,7 +126,11 @@ export default function Sidebar() {
     const hasChildren = item.children && item.children.length > 0
     const isExpanded = expandedItems.includes(item.label)
     const Icon = item.icon
-    const isActive = item.href === pathname || (item.href === "/" && pathname === "/")
+    const isActive =
+      item.href === pathname ||
+      (item.href === "/" && pathname === "/") ||
+      (item.children?.some((child) => child.href === pathname) ?? false)
+
 
     const MenuComponent = item.href ? Link : "div"
     const menuProps = item.href ? { href: item.href } : {}
@@ -142,12 +141,11 @@ export default function Sidebar() {
           {...menuProps}
           className={`
             group flex items-center justify-between px-4 py-3.5 rounded-2xl cursor-pointer transition-all duration-300 ease-out
-            ${
-              level === 0
-                ? isActive
-                  ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/25 transform scale-[1.02]"
-                  : "hover:bg-white/80 hover:shadow-md text-gray-700 hover:text-primary-600 backdrop-blur-sm"
-                : "hover:bg-gray-50 text-gray-600 hover:text-gray-800 ml-6 rounded-xl"
+            ${level === 0
+              ? isActive
+                ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/25 transform scale-[1.02]"
+                : "hover:bg-white/80 hover:shadow-md text-gray-700 hover:text-primary-600 backdrop-blur-sm"
+              : "hover:bg-gray-50 text-gray-600 hover:text-gray-800 ml-6 rounded-xl"
             }
             ${hasChildren && isExpanded && level === 0 ? "mb-2" : ""}
           `}
@@ -156,18 +154,17 @@ export default function Sidebar() {
           <div className="flex items-center space-x-3">
             <div
               className={`
-              ${
-                isActive && level === 0
+              ${isActive && level === 0
                   ? "text-white"
                   : level === 0
                     ? "text-gray-500 group-hover:text-primary-500"
                     : "text-gray-400 group-hover:text-gray-600"
-              } transition-colors duration-200
+                } transition-colors duration-200
             `}
             >
-              <Icon className={`${level > 0 ? "w-4 h-4" : "w-5 h-5"}`} />
+              <Icon className={`${level > 0 ? "w-4 h-4" : "w-5 h-5"} ${level > 0 && isActive ? "text-primary" : ""}`} />
             </div>
-            <span className={`font-medium transition-colors duration-200 ${level > 0 ? "text-sm" : "text-base"}`}>
+            <span className={`font-medium transition-colors duration-200 ${level > 0 ? ("text-sm") : "text-base"} ${level > 0 && isActive ? "text-primary" : ""}`}>
               {item.label}
             </span>
           </div>
@@ -200,7 +197,7 @@ export default function Sidebar() {
     <div className="w-80 bg-gradient-to-b from-white to-gray-50/50 h-screen shadow-xl border-r border-gray-100/50 overflow-y-auto backdrop-blur-sm">
       {/* Header with gradient background */}
       <div className="relative p-6 border-b border-gray-100/50">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-50 to-primary-100/50 rounded-b-3xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-50 to-primary-100/50"></div>
         <div className="relative flex items-center space-x-4">
           <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl flex items-center justify-center shadow-lg shadow-primary-500/25">
             <ChefHat className="w-7 h-7 text-white" />
