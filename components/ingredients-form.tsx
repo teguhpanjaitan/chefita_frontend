@@ -75,10 +75,6 @@ export default function IngredientForm({ isOpen, onClose, ingredient, onSave }: 
       newErrors.lastPrice = "Harga harus lebih dari 0"
     }
 
-    if (!formData.lastUpdate) {
-      newErrors.lastUpdate = "Tanggal update harus diisi"
-    }
-
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -187,41 +183,6 @@ export default function IngredientForm({ isOpen, onClose, ingredient, onSave }: 
                 {errors.unit && <p className="text-red-500 text-sm mt-1">{errors.unit}</p>}
               </div>
 
-              {/* Harga Terakhir */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center space-x-2">
-                  <span>
-                    Harga Terakhir <span className="text-red-500">*</span>
-                  </span>
-                  <div className="group relative">
-                    <HelpCircle className="w-4 h-4 text-gray-400 cursor-help" />
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
-                      Harga satuan terakhir dari bahan ini
-                    </div>
-                  </div>
-                </label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">Rp</span>
-                  <input
-                    type="number"
-                    min="0"
-                    step="100"
-                    value={formData.lastPrice}
-                    onChange={(e) =>
-                      setFormData((prev) => ({ ...prev, lastPrice: Number.parseInt(e.target.value) || 0 }))
-                    }
-                    className={`w-full pl-12 pr-4 py-3 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-200 ${
-                      errors.lastPrice ? "border-red-300 bg-red-50" : "border-gray-200"
-                    }`}
-                    placeholder="0"
-                  />
-                </div>
-                {errors.lastPrice && <p className="text-red-500 text-sm mt-1">{errors.lastPrice}</p>}
-                {formData.lastPrice > 0 && (
-                  <p className="text-sm text-gray-500 mt-1">Preview: {formatCurrency(formData.lastPrice)}</p>
-                )}
-              </div>
-
               {/* Kategori Bahan */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Kategori Bahan</label>
@@ -267,25 +228,38 @@ export default function IngredientForm({ isOpen, onClose, ingredient, onSave }: 
                 </div>
               </div>
 
-              {/* Tanggal Update Harga */}
+              {/* Harga Terakhir */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Tanggal Update Harga <span className="text-red-500">*</span>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center space-x-2">
+                  <span>
+                    Harga Terakhir <span className="text-red-500">*</span>
+                  </span>
+                  <div className="group relative">
+                    <HelpCircle className="w-4 h-4 text-gray-400 cursor-help" />
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
+                      Harga satuan terakhir dari bahan ini
+                    </div>
+                  </div>
                 </label>
                 <div className="relative">
+                  <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">Rp</span>
                   <input
-                    type="date"
-                    value={formData.lastUpdate}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, lastUpdate: e.target.value }))}
-                    className={`w-full px-4 py-3 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-200 ${
-                      errors.lastUpdate ? "border-red-300 bg-red-50" : "border-gray-200"
+                    type="number"
+                    min="0"
+                    step="100"
+                    value={formData.lastPrice}
+                    onChange={(e) =>
+                      setFormData((prev) => ({ ...prev, lastPrice: Number.parseInt(e.target.value) || 0 }))
+                    }
+                    className={`w-full pl-12 pr-4 py-3 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-200 ${
+                      errors.lastPrice ? "border-red-300 bg-red-50" : "border-gray-200"
                     }`}
+                    placeholder="0"
                   />
-                  <Calendar className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
                 </div>
-                {errors.lastUpdate && <p className="text-red-500 text-sm mt-1">{errors.lastUpdate}</p>}
-                {formData.lastUpdate && (
-                  <p className="text-sm text-gray-500 mt-1">Preview: {formatDate(formData.lastUpdate)}</p>
+                {errors.lastPrice && <p className="text-red-500 text-sm mt-1">{errors.lastPrice}</p>}
+                {formData.lastPrice > 0 && (
+                  <p className="text-sm text-gray-500 mt-1">Preview: {formatCurrency(formData.lastPrice)}</p>
                 )}
               </div>
             </div>
