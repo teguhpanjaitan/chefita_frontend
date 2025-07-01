@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Search, Plus, Edit, ChevronDown, ChevronLeft, ChevronRight, AlertTriangle, CheckCircle } from "lucide-react"
 import Sidebar from "../../components/sidebar"
+import IngredientForm from "../../components/ingredients-form"
 
 interface Ingredient {
   id: number
@@ -92,8 +93,10 @@ function IngredientListContent() {
   const [selectedCategory, setSelectedCategory] = useState("Semua Kategori")
   const [currentPage, setCurrentPage] = useState(1)
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false)
-  const [selectedItems, setSelectedItems] = useState<number[]>([])
   const itemsPerPage = 10
+  const [showIngredientForm, setShowIngredientForm] = useState(false)
+  const [editingIngredient, setEditingIngredient] = useState<Ingredient | null>(null)
+  const [ingredients, setIngredients] = useState(mockIngredients)
 
   const filteredIngredients = mockIngredients.filter((ingredient) => {
     const matchesSearch = ingredient.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -122,19 +125,36 @@ function IngredientListContent() {
     })
   }
 
-  const toggleSelectItem = (id: number) => {
-    setSelectedItems((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]))
+  const outdatedCount = mockIngredients.filter((ingredient) => ingredient.isOutdated).length
+
+  const handleAddIngredient = () => {
+    setEditingIngredient(null)
+    setShowIngredientForm(true)
   }
 
-  const toggleSelectAll = () => {
-    if (selectedItems.length === paginatedIngredients.length) {
-      setSelectedItems([])
+  const handleEditIngredient = (ingredient: Ingredient) => {
+    setEditingIngredient(ingredient)
+    setShowIngredientForm(true)
+  }
+
+  const handleSaveIngredient = (ingredientData: Ingredient) => {
+    if (ingredientData.id) {
+      // Update existing ingredient
+      setIngredients((prev) =>
+        prev.map((ingredient) =>
+          ingredient.id === ingredientData.id ? { ...ingredient, ...ingredientData } : ingredient,
+        ),
+      )
     } else {
-      setSelectedItems(paginatedIngredients.map((item) => item.id))
+      // Add new ingredient
+      const newIngredient: Ingredient = {
+        ...ingredientData,
+        id: Math.max(...ingredients.map((i) => i.id)) + 1,
+        usedInRecipes: 0, // New ingredient starts with 0 recipes
+      }
+      setIngredients((prev) => [...prev, newIngredient])
     }
   }
-
-  const outdatedCount = mockIngredients.filter((ingredient) => ingredient.isOutdated).length
 
   return (
     <div className="flex-1 bg-gradient-to-br from-gray-100 to-gray-50 overflow-y-auto">
@@ -212,16 +232,11 @@ function IngredientListContent() {
             </div>
 
             <div className="flex gap-3">
-              {/* Bulk Update Button (shows when items selected) */}
-              {selectedItems.length > 0 && (
-                <button className="bg-gradient-to-r from-warning-500 to-warning-600 hover:from-warning-600 hover:to-warning-700 text-white px-6 py-3 rounded-2xl font-semibold transition-all duration-200 flex items-center space-x-2 shadow-lg shadow-warning-500/25">
-                  <Edit className="w-5 h-5" />
-                  <span>Update {selectedItems.length} Bahan</span>
-                </button>
-              )}
-
               {/* Add Ingredient Button */}
-              <button className="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-6 py-3 rounded-2xl font-semibold transition-all duration-200 flex items-center space-x-2 shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 transform hover:scale-105">
+              <button
+                onClick={handleAddIngredient}
+                className="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-4 lg:px-6 py-3 rounded-2xl font-semibold transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 transform hover:scale-105"
+              >
                 <Plus className="w-5 h-5" />
                 <span>Tambah Bahan</span>
               </button>
@@ -247,9 +262,8 @@ function IngredientListContent() {
                 {paginatedIngredients.map((ingredient, index) => (
                   <tr
                     key={ingredient.id}
-                    className={`border-t border-gray-100 hover:bg-gray-50/50 transition-colors duration-200 ${
-                      index % 2 === 0 ? "bg-white" : "bg-gray-50/30"
-                    } ${ingredient.updatedFromReceipt ? "bg-blue-50/30" : ""}`}
+                    className={`border-t border-gray-100 hover:bg-gray-50/50 transition-colors duration-200 ${index % 2 === 0 ? "bg-white" : "bg-gray-50/30"
+                      } ${ingredient.updatedFromReceipt ? "bg-blue-50/30" : ""}`}
                   >
                     <td className="py-4 px-6">
                       <div className="flex items-center space-x-3">
@@ -284,7 +298,10 @@ function IngredientListContent() {
                       <span className="text-gray-700">{ingredient.usedInRecipes} resep</span>
                     </td>
                     <td className="py-4 px-6">
-                      <button className="p-2 text-primary-600 hover:bg-primary-50 rounded-xl transition-colors duration-200">
+                      <button
+                        onClick={() => handleEditIngredient(ingredient)}
+                        className="p-2 text-primary-600 hover:bg-primary-50 rounded-xl transition-colors duration-200"
+                      >
                         <Edit className="w-4 h-4" />
                       </button>
                     </td>
@@ -300,18 +317,11 @@ function IngredientListContent() {
           {paginatedIngredients.map((ingredient) => (
             <div
               key={ingredient.id}
-              className={`bg-white rounded-3xl p-6 shadow-sm border border-gray-100/50 ${
-                ingredient.updatedFromReceipt ? "bg-blue-50/30 border-blue-200/50" : ""
-              }`}
+              className={`bg-white rounded-3xl p-6 shadow-sm border border-gray-100/50 ${ingredient.updatedFromReceipt ? "bg-blue-50/30 border-blue-200/50" : ""
+                }`}
             >
               <div className="flex justify-between items-start mb-4">
                 <div className="flex items-center space-x-3">
-                  <input
-                    type="checkbox"
-                    checked={selectedItems.includes(ingredient.id)}
-                    onChange={() => toggleSelectItem(ingredient.id)}
-                    className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500"
-                  />
                   <div>
                     <h3 className="font-bold text-lg text-gray-800 flex items-center space-x-2">
                       <span>{ingredient.name}</span>
@@ -370,9 +380,8 @@ function IngredientListContent() {
                 <button
                   key={page}
                   onClick={() => setCurrentPage(page)}
-                  className={`w-10 h-10 rounded-xl font-semibold transition-colors duration-200 ${
-                    currentPage === page ? "bg-primary-500 text-white" : "border border-gray-200 hover:bg-gray-50"
-                  }`}
+                  className={`w-10 h-10 rounded-xl font-semibold transition-colors duration-200 ${currentPage === page ? "bg-primary-500 text-white" : "border border-gray-200 hover:bg-gray-50"
+                    }`}
                 >
                   {page}
                 </button>
@@ -388,6 +397,14 @@ function IngredientListContent() {
             </button>
           </div>
         )}
+
+        {/* Ingredient Form Modal */}
+        <IngredientForm
+          isOpen={showIngredientForm}
+          onClose={() => setShowIngredientForm(false)}
+          ingredient={editingIngredient}
+          onSave={handleSaveIngredient}
+        />
       </div>
     </div>
   )

@@ -42,8 +42,8 @@ const menuItems: MenuItem[] = [
     icon: ChefHat,
     label: "Resep & Bahan",
     children: [
-      { icon: List, label: "Daftar Resep", href: "/recipes" },
       { icon: Package, label: "Daftar Bahan", href: "/ingredients" },
+      { icon: List, label: "Daftar Resep", href: "/recipes" },
       { icon: Tag, label: "Kategori Resep", href: "/categories" },
     ],
   },
