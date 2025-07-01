@@ -1,6 +1,6 @@
 "use client"
 
-import { X, ChefHat, Package, Calculator, TrendingUp, Edit, Copy } from "lucide-react"
+import { X, ChefHat, Package, Calculator, TrendingUp, Edit } from "lucide-react"
 
 interface RecipeIngredient {
   ingredientId: number
@@ -93,21 +93,6 @@ export default function RecipeDetailModal({ isOpen, onClose, recipe, onEdit }: R
               </div>
             </div>
             <div className="flex items-center space-x-2">
-              {onEdit && (
-                <button
-                  onClick={() => onEdit(recipe)}
-                  className="p-2 text-primary-600 hover:bg-primary-50 rounded-xl transition-colors duration-200"
-                  title="Edit Resep"
-                >
-                  <Edit className="w-5 h-5" />
-                </button>
-              )}
-              <button
-                className="p-2 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors duration-200"
-                title="Duplikasi Resep"
-              >
-                <Copy className="w-5 h-5" />
-              </button>
               <button onClick={onClose} className="p-2 hover:bg-white/80 rounded-xl transition-colors duration-200">
                 <X className="w-6 h-6 text-gray-600" />
               </button>
