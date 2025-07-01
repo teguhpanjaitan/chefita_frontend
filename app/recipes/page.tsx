@@ -2,64 +2,131 @@
 
 import { useState } from "react"
 import { Search, Plus, Edit, FileText, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
-import Sidebar from "../../components/sidebar"
 import RecipeForm from "../../components/recipe-form"
+import RecipeDetailModal from "../../components/receipe-detail-modal"
+import Sidebar from "../../components/sidebar"
+
+interface RecipeIngredient {
+  ingredientId: number
+  ingredientName: string
+  quantity: number
+  unit: string
+  cost: number
+}
 
 interface Recipe {
   id: number
   name: string
-  ingredients: number
+  ingredientCount: number // Rename this to avoid confusion
   totalCost: number
   costPerPortion: number
   margin: number
   category: string
+  portions: number
+  ingredients: RecipeIngredient[] // This is the detailed array
+  createdDate?: string
+  lastUpdated?: string
 }
 
 const mockRecipes: Recipe[] = [
   {
     id: 1,
     name: "Ayam Geprek",
-    ingredients: 7,
+    ingredientCount: 7, // Changed from 'ingredients'
     totalCost: 18000,
     costPerPortion: 6000,
     margin: 45,
     category: "Makanan Utama",
+    portions: 3,
+    createdDate: "2024-06-15",
+    lastUpdated: "2024-06-28",
+    ingredients: [
+      // Changed from 'ingredientsList'
+      { ingredientId: 1, ingredientName: "Ayam Fillet", quantity: 300, unit: "Gram", cost: 13500 },
+      { ingredientId: 2, ingredientName: "Tepung Terigu", quantity: 100, unit: "Gram", cost: 1200 },
+      { ingredientId: 3, ingredientName: "Telur Ayam", quantity: 1, unit: "Butir", cost: 2000 },
+      { ingredientId: 4, ingredientName: "Cabai Merah", quantity: 50, unit: "Gram", cost: 1250 },
+      { ingredientId: 5, ingredientName: "Bawang Putih", quantity: 20, unit: "Gram", cost: 700 },
+      { ingredientId: 6, ingredientName: "Minyak Goreng", quantity: 0.05, unit: "Liter", cost: 900 },
+      { ingredientId: 7, ingredientName: "Garam", quantity: 5, unit: "Gram", cost: 50 },
+    ],
   },
   {
     id: 2,
     name: "Nasi Goreng",
-    ingredients: 6,
+    ingredientCount: 6,
     totalCost: 15000,
     costPerPortion: 5000,
     margin: 60,
     category: "Makanan Utama",
+    portions: 3,
+    createdDate: "2024-06-10",
+    lastUpdated: "2024-06-25",
+    ingredients: [
+      { ingredientId: 1, ingredientName: "Beras", quantity: 200, unit: "Gram", cost: 3000 },
+      { ingredientId: 2, ingredientName: "Telur Ayam", quantity: 2, unit: "Butir", cost: 4000 },
+      { ingredientId: 3, ingredientName: "Bawang Merah", quantity: 30, unit: "Gram", cost: 900 },
+      { ingredientId: 4, ingredientName: "Bawang Putih", quantity: 15, unit: "Gram", cost: 525 },
+      { ingredientId: 5, ingredientName: "Kecap Manis", quantity: 30, unit: "ml", cost: 1500 },
+      { ingredientId: 6, ingredientName: "Minyak Goreng", quantity: 0.03, unit: "Liter", cost: 540 },
+    ],
   },
   {
     id: 3,
     name: "Roti Bakar",
-    ingredients: 4,
+    ingredientCount: 4,
     totalCost: 8000,
     costPerPortion: 4000,
     margin: 25,
     category: "Snack",
+    portions: 2,
+    createdDate: "2024-06-20",
+    lastUpdated: "2024-06-30",
+    ingredients: [
+      { ingredientId: 1, ingredientName: "Roti Tawar", quantity: 4, unit: "Lembar", cost: 4000 },
+      { ingredientId: 2, ingredientName: "Mentega", quantity: 20, unit: "Gram", cost: 2000 },
+      { ingredientId: 3, ingredientName: "Gula Pasir", quantity: 10, unit: "Gram", cost: 135 },
+      { ingredientId: 4, ingredientName: "Susu Kental Manis", quantity: 30, unit: "ml", cost: 1500 },
+    ],
   },
   {
     id: 4,
     name: "Es Teh Manis",
-    ingredients: 3,
+    ingredientCount: 3,
     totalCost: 3000,
     costPerPortion: 1500,
     margin: 80,
     category: "Minuman",
+    portions: 2,
+    createdDate: "2024-06-05",
+    lastUpdated: "2024-06-20",
+    ingredients: [
+      { ingredientId: 1, ingredientName: "Teh Celup", quantity: 2, unit: "Sachet", cost: 1000 },
+      { ingredientId: 2, ingredientName: "Gula Pasir", quantity: 40, unit: "Gram", cost: 540 },
+      { ingredientId: 3, ingredientName: "Es Batu", quantity: 100, unit: "Gram", cost: 500 },
+    ],
   },
   {
     id: 5,
     name: "Mie Ayam",
-    ingredients: 8,
+    ingredientCount: 8,
     totalCost: 20000,
     costPerPortion: 7000,
     margin: 35,
     category: "Makanan Utama",
+    portions: 3,
+    createdDate: "2024-06-12",
+    lastUpdated: "2024-06-27",
+    ingredients: [
+      { ingredientId: 1, ingredientName: "Mie Basah", quantity: 300, unit: "Gram", cost: 4500 },
+      { ingredientId: 2, ingredientName: "Ayam Fillet", quantity: 200, unit: "Gram", cost: 9000 },
+      { ingredientId: 3, ingredientName: "Sawi Hijau", quantity: 100, unit: "Gram", cost: 1500 },
+      { ingredientId: 4, ingredientName: "Bawang Merah", quantity: 25, unit: "Gram", cost: 750 },
+      { ingredientId: 5, ingredientName: "Bawang Putih", quantity: 15, unit: "Gram", cost: 525 },
+      { ingredientId: 6, ingredientName: "Kecap Asin", quantity: 20, unit: "ml", cost: 800 },
+      { ingredientId: 7, ingredientName: "Minyak Goreng", quantity: 0.04, unit: "Liter", cost: 720 },
+      { ingredientId: 8, ingredientName: "Kaldu Ayam", quantity: 5, unit: "Gram", cost: 250 },
+    ],
   },
 ]
 
@@ -71,7 +138,9 @@ function RecipeListContent() {
   const [currentPage, setCurrentPage] = useState(1)
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false)
   const [showRecipeForm, setShowRecipeForm] = useState(false)
+  const [showRecipeDetail, setShowRecipeDetail] = useState(false)
   const [editingRecipe, setEditingRecipe] = useState<Recipe | null>(null)
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null)
   const [recipes, setRecipes] = useState(mockRecipes)
   const itemsPerPage = 10
 
@@ -110,11 +179,16 @@ function RecipeListContent() {
       id: recipe.id,
       name: recipe.name,
       category: recipe.category,
-      portions: 1, // Default, would come from actual data
-      ingredients: [], // Would be populated from actual recipe data
+      portions: recipe.portions,
+      ingredients: recipe.ingredients || [],
     }
     setEditingRecipe(formRecipe as any)
     setShowRecipeForm(true)
+  }
+
+  const handleViewDetail = (recipe: Recipe) => {
+    setSelectedRecipe(recipe)
+    setShowRecipeDetail(true)
   }
 
   const handleSaveRecipe = (recipeData: any) => {
@@ -127,6 +201,8 @@ function RecipeListContent() {
                 ...recipe,
                 name: recipeData.name,
                 category: recipeData.category,
+                portions: recipeData.portions,
+                lastUpdated: new Date().toISOString().split("T")[0],
                 // Update other fields based on ingredients calculation
               }
             : recipe,
@@ -138,10 +214,14 @@ function RecipeListContent() {
         id: Math.max(...recipes.map((r) => r.id)) + 1,
         name: recipeData.name,
         category: recipeData.category,
-        ingredients: recipeData.ingredients.length,
+        portions: recipeData.portions,
+        ingredientCount: recipeData.ingredients.length, // Changed from 'ingredients'
         totalCost: recipeData.ingredients.reduce((sum: number, ing: any) => sum + ing.cost, 0),
         costPerPortion: 0, // Calculate based on portions
         margin: 0, // Would be calculated
+        ingredients: recipeData.ingredients, // Changed from 'ingredientsList'
+        createdDate: new Date().toISOString().split("T")[0],
+        lastUpdated: new Date().toISOString().split("T")[0],
       }
       setRecipes((prev) => [...prev, newRecipe])
     }
@@ -152,29 +232,29 @@ function RecipeListContent() {
       {/* Modern Header with gradient */}
       <div className="relative bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-100/50">
         <div className="absolute inset-0 bg-gradient-to-r from-primary-50/30 to-transparent"></div>
-        <div className="relative p-8">
+        <div className="relative p-4 lg:p-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
+              <h1 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
                 📋 Daftar Resep
               </h1>
-              <p className="text-gray-600 text-lg">
+              <p className="text-gray-600 text-base lg:text-lg">
                 Kelola semua resep dan pantau HPP untuk optimasi margin keuntungan
               </p>
             </div>
             <div className="hidden md:flex items-center space-x-4">
               <div className="text-right">
                 <p className="text-sm text-gray-500">Total Resep</p>
-                <p className="text-2xl font-bold text-gray-800">{recipes.length}</p>
+                <p className="text-xl lg:text-2xl font-bold text-gray-800">{recipes.length}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="p-8 space-y-8">
+      <div className="p-4 lg:p-8 space-y-6 lg:space-y-8">
         {/* Top Bar Filters */}
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100/50">
+        <div className="bg-white rounded-2xl lg:rounded-3xl p-4 lg:p-6 shadow-sm border border-gray-100/50">
           <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
             <div className="flex flex-col sm:flex-row gap-4 flex-1">
               {/* Search Input */}
@@ -221,7 +301,7 @@ function RecipeListContent() {
             {/* Add Recipe Button */}
             <button
               onClick={handleAddRecipe}
-              className="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-6 py-3 rounded-2xl font-semibold transition-all duration-200 flex items-center space-x-2 shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 transform hover:scale-105"
+              className="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-4 lg:px-6 py-3 rounded-2xl font-semibold transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/30 transform hover:scale-105"
             >
               <Plus className="w-5 h-5" />
               <span>Tambah Resep</span>
@@ -256,7 +336,7 @@ function RecipeListContent() {
                       <div className="text-sm text-gray-500">{recipe.category}</div>
                     </td>
                     <td className="py-4 px-6">
-                      <span className="text-gray-700">{recipe.ingredients} bahan</span>
+                      <span className="text-gray-700">{recipe.ingredientCount} bahan</span>
                     </td>
                     <td className="py-4 px-6">
                       <span className="font-semibold text-gray-800">{formatCurrency(recipe.totalCost)}</span>
@@ -274,10 +354,15 @@ function RecipeListContent() {
                         <button
                           onClick={() => handleEditRecipe(recipe)}
                           className="p-2 text-primary-600 hover:bg-primary-50 rounded-xl transition-colors duration-200"
+                          title="Edit Resep"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
-                        <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-xl transition-colors duration-200">
+                        <button
+                          onClick={() => handleViewDetail(recipe)}
+                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-xl transition-colors duration-200"
+                          title="Lihat Detail"
+                        >
                           <FileText className="w-4 h-4" />
                         </button>
                       </div>
@@ -292,7 +377,10 @@ function RecipeListContent() {
         {/* Mobile Cards */}
         <div className="lg:hidden space-y-4">
           {paginatedRecipes.map((recipe) => (
-            <div key={recipe.id} className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100/50">
+            <div
+              key={recipe.id}
+              className="bg-white rounded-2xl lg:rounded-3xl p-4 lg:p-6 shadow-sm border border-gray-100/50"
+            >
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h3 className="font-bold text-lg text-gray-800">{recipe.name}</h3>
@@ -306,7 +394,7 @@ function RecipeListContent() {
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
                   <p className="text-xs text-gray-500 mb-1">Jumlah Bahan</p>
-                  <p className="font-semibold text-gray-800">{recipe.ingredients} bahan</p>
+                  <p className="font-semibold text-gray-800">{recipe.ingredientCount} bahan</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-500 mb-1">Total HPP</p>
@@ -330,7 +418,10 @@ function RecipeListContent() {
                   <Edit className="w-4 h-4" />
                   <span>Edit</span>
                 </button>
-                <button className="flex-1 bg-blue-50 text-blue-600 py-2 px-4 rounded-xl font-semibold hover:bg-blue-100 transition-colors duration-200 flex items-center justify-center space-x-2">
+                <button
+                  onClick={() => handleViewDetail(recipe)}
+                  className="flex-1 bg-blue-50 text-blue-600 py-2 px-4 rounded-xl font-semibold hover:bg-blue-100 transition-colors duration-200 flex items-center justify-center space-x-2"
+                >
                   <FileText className="w-4 h-4" />
                   <span>Detail</span>
                 </button>
@@ -381,6 +472,14 @@ function RecipeListContent() {
         onClose={() => setShowRecipeForm(false)}
         recipe={editingRecipe}
         onSave={handleSaveRecipe}
+      />
+
+      {/* Recipe Detail Modal */}
+      <RecipeDetailModal
+        isOpen={showRecipeDetail}
+        onClose={() => setShowRecipeDetail(false)}
+        recipe={selectedRecipe}
+        onEdit={handleEditRecipe}
       />
     </div>
   )
