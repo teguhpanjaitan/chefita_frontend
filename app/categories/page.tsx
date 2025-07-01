@@ -247,7 +247,7 @@ function CategoryListContent() {
       </div>
 
       {/* FILTER BAR */}
-      <div className="p-4 lg:p-8">
+      <div className="p-8 space-y-8">
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100/50 flex flex-col sm:flex-row sm:items-center sm:space-x-4 gap-4 sm:gap-0 justify-between">
           {/* search + status in same group */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 flex-1">
@@ -300,11 +300,8 @@ function CategoryListContent() {
             <span>Tambah Kategori</span>
           </button>
         </div>
-      </div>
-
 
       {/* CONTENT */}
-      <div className="p-4 lg:p-8 space-y-6 lg:space-y-8">
         {filtered.length ? (
           <>
             {/* DESKTOP TABLE */}
