@@ -45,7 +45,7 @@ const menuItems: MenuItem[] = [
     children: [
       { icon: List, label: "Daftar Resep", href: "/recipes" },
       { icon: Package, label: "Daftar Bahan", href: "/ingredients" },
-      { icon: Upload, label: "Import Excel", href: "/import" },
+      // { icon: Upload, label: "Import Excel", href: "/import" },
       { icon: Tag, label: "Kategori Resep", href: "/categories" },
     ],
   },
@@ -69,7 +69,7 @@ const menuItems: MenuItem[] = [
     icon: TrendingUp,
     label: "Simulasi & Margin",
     children: [
-      { icon: Calculator, label: "Simulasi Harga Jual (dengan What-if)", href: "/price-simulation" },
+      { icon: Calculator, label: "Simulasi Harga Jual", href: "/price-simulation" },
       { icon: ChefHat, label: "Food Cost Simulator", href: "/food-cost" },
       { icon: Target, label: "Simulasi Modal & BEP", href: "/bep-simulation" },
     ],
