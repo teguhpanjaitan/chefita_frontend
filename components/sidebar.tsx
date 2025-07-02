@@ -68,8 +68,8 @@ const menuItems: MenuItem[] = [
     label: "Simulasi & Margin",
     children: [
       { icon: Calculator, label: "Simulasi Harga Jual", href: "/price-simulation" },
-      { icon: ChefHat, label: "Food Cost Simulator", href: "/food-cost" },
-      { icon: Target, label: "Simulasi Modal & BEP", href: "/bep-simulation" },
+      { icon: ChefHat, label: "Food Cost Simulator", href: "/food-cost-simulator" },
+      // { icon: Target, label: "Simulasi Modal & BEP", href: "/bep-simulation" },
     ],
   },
   {
