@@ -51,7 +51,7 @@ const menuItems: MenuItem[] = [
     icon: DollarSign,
     label: "Harga Belanja",
     children: [
-      { icon: Send, label: "Riwayat Nota Belanja", href: "/receipts" },
+      { icon: Send, label: "Proses Nota Belanja", href: "/receipts" },
       { icon: Edit, label: "Update Harga Manual", href: "/price-update" },
     ],
   },
