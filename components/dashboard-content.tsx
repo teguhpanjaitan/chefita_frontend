@@ -18,7 +18,10 @@ import {
   Edit,
   Calculator,
   X,
+  ShoppingCart
 } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 
 export default function DashboardContent() {
   const [showIngredientAlert, setShowIngredientAlert] = useState(true)
@@ -351,11 +354,10 @@ export default function DashboardContent() {
                     <div
                       className={`
                       w-10 h-10 rounded-xl flex items-center justify-center shadow-sm
-                      ${
-                        activity.type === "success"
+                      ${activity.type === "success"
                           ? "bg-gradient-to-br from-success-100 to-success-200"
                           : "bg-gradient-to-br from-blue-100 to-blue-200"
-                      }
+                        }
                     `}
                     >
                       <activity.icon
@@ -385,6 +387,33 @@ export default function DashboardContent() {
             </div>
           </div>
         </div>
+
+        {/* Quick Actions */}
+        <Card className="rounded-xl border-0 shadow-sm hover:shadow-lg transition-shadow">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold">Quick Actions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <Button variant="outline" className="h-20 flex-col gap-2 bg-transparent">
+                <ChefHat className="h-6 w-6" />
+                <span className="text-sm">Add Recipe</span>
+              </Button>
+              <Button variant="outline" className="h-20 flex-col gap-2 bg-transparent">
+                <Package className="h-6 w-6" />
+                <span className="text-sm">Add Ingredient</span>
+              </Button>
+              <Button variant="outline" className="h-20 flex-col gap-2 bg-transparent">
+                <ShoppingCart className="h-6 w-6" />
+                <span className="text-sm">Update Prices</span>
+              </Button>
+              <Button variant="outline" className="h-20 flex-col gap-2 bg-transparent">
+                <Target className="h-6 w-6" />
+                <span className="text-sm">Cost Analysis</span>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
