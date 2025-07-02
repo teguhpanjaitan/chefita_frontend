@@ -1,4 +1,4 @@
-import ChefitaDashboard from "./dashboard"
+import ChefitaDashboard from "./dashboard/page";
 
 export default function Page() {
   return <ChefitaDashboard />
