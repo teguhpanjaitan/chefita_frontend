@@ -169,7 +169,7 @@ function IngredientListContent() {
                 <p className="text-2xl font-bold text-gray-800">{mockIngredients.length}</p>
               </div>
               <div className="text-right">
-                <p className="text-sm text-warning-600">Perlu Update</p>
+                <p className="text-sm text-gray-600">Perlu Update</p>
                 <p className="text-2xl font-bold text-warning-600">{outdatedCount}</p>
               </div></div>}
       />

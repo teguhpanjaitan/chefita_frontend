@@ -10,10 +10,12 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronDown,
+  Folder
 } from "lucide-react"
 import Sidebar from "../../components/sidebar"
 import CategoryForm from "../../components/category-form"
 import ConfirmDialog from "../../components/confirm-dialog"
+import { Header } from "@/components/common/Header"
 
 interface Category {
   id: number
@@ -227,24 +229,19 @@ function CategoryListContent() {
   /* ---------- UI ---------- */
   return (
     <div className="flex-1 bg-gradient-to-br from-gray-100 to-gray-50 overflow-y-auto">
-      {/* HEADER */}
-      <div className="relative bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-100/50">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-50/30 to-transparent" />
-        <div className="relative p-4 lg:p-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-1">
-              📂 Kategori Resep
-            </h1>
-            <p className="text-gray-600 text-base lg:text-lg">
-              Kelola kategori resep untuk mengorganisir menu
-            </p>
-          </div>
-          <div className="hidden md:flex items-center space-x-6">
-            <Stat label="Total Kategori" value={total} />
-            <Stat label="Aktif" value={active} color="success" />
-          </div>
+      <Header
+        icon={<Folder className="w-9 h-9 text-primary" />}
+        title="Daftar Resep"
+        subTitle="Kelola semua resep dan pantau HPP untuk optimasi margin keuntungan"
+        rightElement={<div className="flex space-x-6"><div className="text-right">
+          <p className="text-sm text-gray-500">Total Kategori</p>
+          <p className="text-2xl font-bold text-gray-800">{total}</p>
         </div>
-      </div>
+          <div className="text-right">
+            <p className="text-sm text-gray-600">Aktif</p>
+            <p className="text-2xl font-bold text-success-600">{active}</p>
+          </div></div>}
+      />
 
       {/* FILTER BAR */}
       <div className="p-8 space-y-8">
@@ -301,7 +298,7 @@ function CategoryListContent() {
           </button>
         </div>
 
-      {/* CONTENT */}
+        {/* CONTENT */}
         {filtered.length ? (
           <>
             {/* DESKTOP TABLE */}

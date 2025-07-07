@@ -1,10 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { Search, Plus, Edit, FileText, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
+import { Search, Plus, Edit, FileText, ChevronDown, ChevronLeft, ChevronRight, ReceiptText} from "lucide-react"
 import RecipeForm from "../../components/recipe-form"
 import RecipeDetailModal from "../../components/receipe-detail-modal"
 import Sidebar from "../../components/sidebar"
+import { Header } from "@/components/common/Header"
 
 interface RecipeIngredient {
   ingredientId: number
@@ -198,13 +199,13 @@ function RecipeListContent() {
         prev.map((recipe) =>
           recipe.id === recipeData.id
             ? {
-                ...recipe,
-                name: recipeData.name,
-                category: recipeData.category,
-                portions: recipeData.portions,
-                lastUpdated: new Date().toISOString().split("T")[0],
-                // Update other fields based on ingredients calculation
-              }
+              ...recipe,
+              name: recipeData.name,
+              category: recipeData.category,
+              portions: recipeData.portions,
+              lastUpdated: new Date().toISOString().split("T")[0],
+              // Update other fields based on ingredients calculation
+            }
             : recipe,
         ),
       )
@@ -229,28 +230,15 @@ function RecipeListContent() {
 
   return (
     <div className="flex-1 bg-gradient-to-br from-gray-100 to-gray-50 overflow-y-auto">
-      {/* Modern Header with gradient */}
-      <div className="relative bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-100/50">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-50/30 to-transparent"></div>
-        <div className="relative p-4 lg:p-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
-                📋 Daftar Resep
-              </h1>
-              <p className="text-gray-600 text-base lg:text-lg">
-                Kelola semua resep dan pantau HPP untuk optimasi margin keuntungan
-              </p>
-            </div>
-            <div className="hidden md:flex items-center space-x-4">
-              <div className="text-right">
-                <p className="text-sm text-gray-500">Total Resep</p>
-                <p className="text-xl lg:text-2xl font-bold text-gray-800">{recipes.length}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Header
+        icon={<ReceiptText className="w-9 h-9 text-primary" />}
+        title="Daftar Resep"
+        subTitle="Kelola semua resep dan pantau HPP untuk optimasi margin keuntungan"
+        rightElement={<div className="text-right">
+          <p className="text-sm text-gray-500">Total Resep</p>
+          <p className="text-xl lg:text-2xl font-bold text-gray-800">{recipes.length}</p>
+        </div>}
+      />
 
       <div className="p-4 lg:p-8 space-y-6 lg:space-y-8">
         {/* Top Bar Filters */}
@@ -327,9 +315,8 @@ function RecipeListContent() {
                 {paginatedRecipes.map((recipe, index) => (
                   <tr
                     key={recipe.id}
-                    className={`border-t border-gray-100 hover:bg-gray-50/50 transition-colors duration-200 ${
-                      index % 2 === 0 ? "bg-white" : "bg-gray-50/30"
-                    }`}
+                    className={`border-t border-gray-100 hover:bg-gray-50/50 transition-colors duration-200 ${index % 2 === 0 ? "bg-white" : "bg-gray-50/30"
+                      }`}
                   >
                     <td className="py-4 px-6">
                       <div className="font-semibold text-gray-800">{recipe.name}</div>
@@ -446,9 +433,8 @@ function RecipeListContent() {
                 <button
                   key={page}
                   onClick={() => setCurrentPage(page)}
-                  className={`w-10 h-10 rounded-xl font-semibold transition-colors duration-200 ${
-                    currentPage === page ? "bg-primary-500 text-white" : "border border-gray-200 hover:bg-gray-50"
-                  }`}
+                  className={`w-10 h-10 rounded-xl font-semibold transition-colors duration-200 ${currentPage === page ? "bg-primary-500 text-white" : "border border-gray-200 hover:bg-gray-50"
+                    }`}
                 >
                   {page}
                 </button>
