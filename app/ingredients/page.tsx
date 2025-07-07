@@ -1,9 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { Search, Plus, Edit, ChevronDown, ChevronLeft, ChevronRight, AlertTriangle, CheckCircle } from "lucide-react"
+import { Search, Plus, Edit, ChevronDown, ChevronLeft, ChevronRight, AlertTriangle, CheckCircle, Box } from "lucide-react"
 import Sidebar from "../../components/sidebar"
 import IngredientForm from "../../components/ingredients-form"
+import { Header } from "@/components/common/Header"
 
 interface Ingredient {
   id: number
@@ -159,31 +160,19 @@ function IngredientListContent() {
   return (
     <div className="flex-1 bg-gradient-to-br from-gray-100 to-gray-50 overflow-y-auto">
       {/* Modern Header with gradient */}
-      <div className="relative bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-100/50">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-50/30 to-transparent"></div>
-        <div className="relative p-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
-                📦 Daftar Bahan
-              </h1>
-              <p className="text-gray-600 text-lg">
-                Kelola harga bahan baku dan pantau update terbaru untuk akurasi HPP
-              </p>
-            </div>
-            <div className="hidden md:flex items-center space-x-6">
-              <div className="text-right">
+      <Header
+        icon={<Box className="w-9 h-9 text-primary" />}
+        title="Daftar Bahan"
+        subTitle="Kelola harga bahan baku dan pantau update terbaru untuk akurasi HPP"
+        rightElement={<div className="flex space-x-6"><div className="text-right">
                 <p className="text-sm text-gray-500">Total Bahan</p>
                 <p className="text-2xl font-bold text-gray-800">{mockIngredients.length}</p>
               </div>
               <div className="text-right">
                 <p className="text-sm text-warning-600">Perlu Update</p>
                 <p className="text-2xl font-bold text-warning-600">{outdatedCount}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+              </div></div>}
+      />
 
       <div className="p-8 space-y-8">
         {/* Top Bar Filters */}
