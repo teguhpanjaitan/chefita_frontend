@@ -16,11 +16,13 @@ import {
   Edit,
   Calculator,
   X,
-  ShoppingCart
+  ShoppingCart,
+  Gauge
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Sidebar from "../../components/sidebar"
+import { Header } from "@/components/common/Header"
 
 function DashboardContent() {
   const [showIngredientAlert, setShowIngredientAlert] = useState(true)
@@ -29,27 +31,12 @@ function DashboardContent() {
   return (
     <div className="flex-1 bg-gradient-to-br from-gray-100 to-gray-50 overflow-y-auto">
       {/* Modern Header with gradient */}
-      <div className="relative bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-100/50">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-50/30 to-transparent"></div>
-        <div className="relative p-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
-                Dashboard Usaha Kuliner Kamu
-              </h1>
-              <p className="text-gray-600 text-lg">
-                Selamat datang kembali! Pantau performa bisnis kuliner Anda hari ini.
-              </p>
-            </div>
-            <div className="hidden md:flex items-center space-x-4">
-              <div className="text-right">
-                <p className="text-sm text-gray-500">Hari ini</p>
-                <p className="text-2xl font-bold text-gray-800">Rabu, 30 Jun</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Header
+        icon={<Gauge className="w-9 h-9 text-primary" />}
+        title="Dashboard"
+        subTitle="Selamat datang kembali! Pantau performa bisnis kuliner Anda hari ini."
+        rightElement={<div><p className="text-sm text-gray-500">Hari ini</p><p className="text-2xl font-bold text-gray-800">Rabu, 30 Jun</p></div>}
+      />
 
       <div className="p-8 space-y-8">
         {/* Alerts & Call-to-Actions - Moved to top */}
